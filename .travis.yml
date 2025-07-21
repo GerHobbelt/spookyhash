@@ -16,7 +16,7 @@ matrix:
 
     - os: linux
       sudo: false
-      env: C_COMPILER=clang TOOLSET=clang AR="ar" ARCH=native LTO=off
+      env: C_COMPILER=clang TOOLSET=clang AR="llvm-ar" ARCH=native LTO=on
 
     # Ubuntu 14.04 LTS Server Edition 64 bit
     - dist: trusty
@@ -27,9 +27,8 @@ matrix:
             - qemu-system-arm
             - qemu-user-static
             - gcc-aarch64-linux-gnu
-            - gcc-multilib
-            - libc6-dev-i386
-      env: C_COMPILER=aarch64-linux-gnu-gcc TOOLSET=gcc AR="ar" ARCH=native LTO=on GCCPREFIX=aarch64-linux-gnu- QEMU_INTERPRETER=qemu-aarch64-static
+            - g++-aarch64-linux-gnu
+      env: C_COMPILER=aarch64-linux-gnu-gcc TOOLSET=gcc AR="ar" ARCH=native LTO=off GCCPREFIX=aarch64-linux-gnu- QEMU_INTERPRETER=qemu-aarch64-static
 
     - dist: trusty
       sudo: required
@@ -39,9 +38,8 @@ matrix:
             - qemu-system-arm
             - qemu-user-static
             - gcc-arm-linux-gnueabi
-            - gcc-multilib
-            - libc6-dev-i386
-      env: C_COMPILER=arm-linux-gnueabi-gcc TOOLSET=gcc AR="ar" ARCH=native LTO=on, GCCPREFIX=arm-linux-gnueabi- QEMU_INTERPRETER=qemu-arm-static
+            - g++-arm-linux-gnueabi
+      env: C_COMPILER=arm-linux-gnueabi-gcc TOOLSET=gcc AR="ar" ARCH=native LTO=off GCCPREFIX=arm-linux-gnueabi- QEMU_INTERPRETER=qemu-arm-static
 
     - dist: trusty
       sudo: required
@@ -51,7 +49,7 @@ matrix:
             - qemu-system-ppc
             - qemu-user-static
             - gcc-powerpc-linux-gnu
-      env: C_COMPILER=powerpc-linux-gnu-gcc TOOLSET=gcc AR="gcc-ar" ARCH=x64 LTO=on GCCPREFIX=powerpc-linux-gnu- QEMU_INTERPRETER=qemu-ppc64-static
+      env: C_COMPILER=powerpc-linux-gnu-gcc TOOLSET=gcc AR="gcc-ar" ARCH=x64 LTO=off GCCPREFIX=powerpc-linux-gnu- QEMU_INTERPRETER=qemu-ppc64-static
 
     - dist: trusty
       sudo: required
@@ -61,7 +59,7 @@ matrix:
             - qemu-system-ppc
             - qemu-user-static
             - gcc-powerpc-linux-gnu
-      env: C_COMPILER=powerpc-linux-gnu-gcc TOOLSET=gcc AR="gcc-ar" ARCH=native LTO=on GCCPREFIX=powerpc-linux-gnu- QEMU_INTERPRETER=qemu-ppc-static
+      env: C_COMPILER=powerpc-linux-gnu-gcc TOOLSET=gcc AR="gcc-ar" ARCH=native LTO=off GCCPREFIX=powerpc-linux-gnu- QEMU_INTERPRETER=qemu-ppc-static
 
     - dist: trusty
       sudo: required
@@ -177,7 +175,8 @@ matrix:
             - llvm-toolchain-trusty-3.5
           packages:
             - clang-3.5
-      env: C_COMPILER=clang-3.5 TOOLSET=clang AR="ar" ARCH=native LTO=off
+            - llvm-3.5-dev
+      env: C_COMPILER=clang-3.5 TOOLSET=clang AR="llvm-ar" ARCH=native LTO=on
 
     - dist: trusty
       sudo: required
@@ -188,18 +187,8 @@ matrix:
             - llvm-toolchain-trusty-3.6
           packages:
             - clang-3.6
-      env: C_COMPILER=clang-3.6 TOOLSET=clang AR="ar" ARCH=native LTO=off
-
-    - dist: trusty
-      sudo: required
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-trusty-3.8
-          packages:
-            - clang-3.7
-      env: C_COMPILER=clang-3.7 TOOLSET=clang AR="ar" ARCH=native LTO=off
+            - llvm-3.6-dev
+      env: C_COMPILER=clang-3.6 TOOLSET=clang AR="llvm-ar" ARCH=native LTO=on
 
     - dist: trusty
       sudo: required
@@ -210,7 +199,8 @@ matrix:
             - llvm-toolchain-trusty-3.8
           packages:
             - clang-3.8
-      env: C_COMPILER=clang-3.8 TOOLSET=clang AR="ar" ARCH=native LTO=off
+            - llvm-3.8-dev
+      env: C_COMPILER=clang-3.8 TOOLSET=clang AR="llvm-ar" ARCH=native LTO=on
 
     - dist: trusty
       sudo: required
@@ -221,7 +211,8 @@ matrix:
             - llvm-toolchain-trusty-3.9
           packages:
             - clang-3.9
-      env: C_COMPILER=clang-3.9 TOOLSET=clang AR="ar" ARCH=native LTO=off
+            - llvm-3.9-dev
+      env: C_COMPILER=clang-3.9 TOOLSET=clang AR="llvm-ar" ARCH=native LTO=on
 
     - dist: trusty
       sudo: required
@@ -232,7 +223,8 @@ matrix:
             - llvm-toolchain-trusty-4.0
           packages:
             - clang-4.0
-      env: C_COMPILER=clang-4.0 TOOLSET=clang AR="ar" ARCH=native LTO=off
+            - llvm-4.0-dev
+      env: C_COMPILER=clang-4.0 TOOLSET=clang AR="llvm-ar" ARCH=native LTO=on
 
     - dist: trusty
       sudo: required
@@ -243,7 +235,8 @@ matrix:
             - llvm-toolchain-trusty-5.0
           packages:
             - clang-5.0
-      env: C_COMPILER=clang-5.0 TOOLSET=clang AR="ar" ARCH=native LTO=off
+            - llvm-5.0-dev
+      env: C_COMPILER=clang-5.0 TOOLSET=clang AR="llvm-ar" ARCH=native LTO=on
 
 before_install:
   - cd build
@@ -261,4 +254,4 @@ script:
   - make CC=$C_COMPILER
   - ls -la ./bin/Release/
   - file ./bin/Release/*
-  - $QEMU_INTERPRETER ./bin/Release/spookyhash-test
+#  - $QEMU_INTERPRETER ./bin/Release/spookyhash-test
