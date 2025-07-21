@@ -44,14 +44,14 @@
 
 #include "globals.h"
 
-SPOOKYHASH_WINDOWS_EXPORT uint8_t spookyhash_version_major() {
+SPOOKYHASH_WINDOWS_EXPORT uint8_t spookyhash_version_major(void) {
     return SPOOKYHASH_MAJOR_VERSION;
 }
 
-SPOOKYHASH_WINDOWS_EXPORT uint8_t spookyhash_version_minor() {
+SPOOKYHASH_WINDOWS_EXPORT uint8_t spookyhash_version_minor(void) {
     return SPOOKYHASH_MINOR_VERSION;
 }
 
-SPOOKYHASH_WINDOWS_EXPORT uint8_t spookyhash_version_revision() {
+SPOOKYHASH_WINDOWS_EXPORT uint8_t spookyhash_version_revision(void) {
     return SPOOKYHASH_REVISION;
 }
